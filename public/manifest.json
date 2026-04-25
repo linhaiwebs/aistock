@@ -1,0 +1,16 @@
+{
+  "name": "AI株式診断サービス",
+  "short_name": "AI株式診断サービス",
+  "description": "完全無料・登録不要・クレジットカード不要のAI株式診断サービス。AIが株式市場を分析し、詳細なレポートを数秒で提供。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#10b981",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

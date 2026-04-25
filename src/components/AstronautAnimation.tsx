@@ -1,0 +1,87 @@
+export default function AstronautAnimation() {
+  return (
+    <div className="w-32 h-32 sm:w-40 sm:h-40 animate-astronaut-float">
+      <svg
+        viewBox="0 0 200 200"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-full h-full drop-shadow-2xl"
+      >
+        <defs>
+          <linearGradient id="astronautGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#81E6D9" />
+            <stop offset="100%" stopColor="#4FD1C5" />
+          </linearGradient>
+          <linearGradient id="helmetGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#E0F7FA" />
+            <stop offset="100%" stopColor="#81E6D9" />
+          </linearGradient>
+          <radialGradient id="visorGradient" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#38B2AC" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="#2C5282" stopOpacity="0.7" />
+          </radialGradient>
+          <linearGradient id="coralAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#FFA07A" />
+            <stop offset="100%" stopColor="#FFB6A3" />
+          </linearGradient>
+        </defs>
+
+        <ellipse cx="100" cy="180" rx="40" ry="8" fill="#1E3A5F" opacity="0.15">
+          <animate attributeName="rx" values="40;45;40" dur="3s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.15;0.1;0.15" dur="3s" repeatCount="indefinite" />
+        </ellipse>
+
+        <g className="astronaut-body">
+          <rect x="70" y="90" width="60" height="70" rx="10" fill="url(#astronautGradient)" stroke="#38B2AC" strokeWidth="2" opacity="0.9" />
+
+          <rect x="55" y="100" width="20" height="50" rx="10" fill="url(#astronautGradient)" stroke="#38B2AC" strokeWidth="2" opacity="0.9" />
+          <rect x="125" y="100" width="20" height="50" rx="10" fill="url(#astronautGradient)" stroke="#38B2AC" strokeWidth="2" opacity="0.9">
+            <animateTransform
+              attributeName="transform"
+              type="rotate"
+              values="0 135 100; -5 135 100; 0 135 100"
+              dur="2s"
+              repeatCount="indefinite"
+            />
+          </rect>
+
+          <rect x="75" y="155" width="20" height="35" rx="8" fill="url(#astronautGradient)" stroke="#38B2AC" strokeWidth="2" opacity="0.9" />
+          <rect x="105" y="155" width="20" height="35" rx="8" fill="url(#astronautGradient)" stroke="#38B2AC" strokeWidth="2" opacity="0.9" />
+
+          <circle cx="85" cy="190" r="8" fill="#2C5282" opacity="0.7" />
+          <circle cx="115" cy="190" r="8" fill="#2C5282" opacity="0.7" />
+
+          <circle cx="100" cy="60" r="35" fill="url(#helmetGradient)" stroke="#38B2AC" strokeWidth="3" opacity="0.9" />
+
+          <ellipse cx="100" cy="60" rx="25" ry="20" fill="url(#visorGradient)">
+            <animate attributeName="opacity" values="0.8;0.5;0.8" dur="4s" repeatCount="indefinite" />
+          </ellipse>
+
+          <circle cx="90" cy="55" r="3" fill="white" opacity="0.6" />
+          <circle cx="95" cy="50" r="2" fill="white" opacity="0.4" />
+
+          <rect x="95" y="25" width="10" height="8" rx="2" fill="url(#coralAccent)" opacity="0.8" />
+          <circle cx="100" cy="22" r="3" fill="#FFB6A3" opacity="0.7" />
+
+          <path d="M 75 110 L 70 120 L 75 120" fill="none" stroke="#38B2AC" strokeWidth="2" opacity="0.7" />
+          <path d="M 125 110 L 130 120 L 125 120" fill="none" stroke="#38B2AC" strokeWidth="2" opacity="0.7" />
+
+          <circle cx="85" cy="125" r="4" fill="url(#coralAccent)" opacity="0.5" />
+          <circle cx="115" cy="125" r="4" fill="url(#coralAccent)" opacity="0.5" />
+        </g>
+
+        <g className="stars" opacity="0.5">
+          <circle cx="30" cy="30" r="2" fill="#FFD7BE">
+            <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="170" cy="50" r="1.5" fill="#4FD1C5">
+            <animate attributeName="opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite" begin="0.5s" />
+          </circle>
+          <circle cx="160" cy="150" r="2" fill="#81E6D9">
+            <animate attributeName="opacity" values="0.4;1;0.4" dur="2.5s" repeatCount="indefinite" begin="1s" />
+          </circle>
+        </g>
+      </svg>
+    </div>
+  );
+}
