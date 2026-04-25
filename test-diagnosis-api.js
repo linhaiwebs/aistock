@@ -183,6 +183,59 @@ async function main() {
     assert(response.status !== 404, 'Stock endpoint should still exist');
   });
 
+  // Test 13: Admin diagnosis config requires auth
+  await test('Admin diagnosis config requires authentication', async () => {
+    const { status } = await fetchJSON('/api/admin/diagnosis-config');
+    assert(status === 401, `Expected 401 without auth, got ${status}`);
+  });
+
+  // Test 14: Admin login + diagnosis config flow
+  await test('Admin diagnosis config full flow (login→GET→PUT→reset)', async () => {
+    // Login first
+    const { status: loginStatus, data: loginData } = await fetchJSON('/api/admin/login', {
+      method: 'POST',
+      body: JSON.stringify({ username: 'admin', password: 'admin123' }),
+    });
+    assert(loginStatus === 200, `Login failed: ${loginStatus}`);
+    assert(loginData.token, 'Should return token');
+    const token = loginData.token;
+
+    // GET config with auth
+    const getRes = await fetch(`${BASE_URL}/api/admin/diagnosis-config`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    const getConfig = await getRes.json();
+    assert(getConfig.template, 'Should return template');
+    assert(getConfig.defaultTemplate, 'Should return defaultTemplate');
+
+    // PUT custom template
+    const customTpl = '### {input} テスト用カスタム\n\n管理画面から更新。';
+    const putRes = await fetch(`${BASE_URL}/api/admin/diagnosis-config`, {
+      method: 'PUT',
+      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ template: customTpl }),
+    });
+    const putData = await putRes.json();
+    assert(putData.success === true, 'PUT should succeed');
+
+    // Verify custom template is used in diagnosis
+    const diagRes = await fetch(`${BASE_URL}/api/gemini/diagnosis`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: '管理テスト' }),
+    });
+    const diagData = await diagRes.json();
+    assert(diagData.analysis.includes('テスト用カスタム'), 'Should use custom template from admin');
+
+    // Reset
+    const resetRes = await fetch(`${BASE_URL}/api/admin/diagnosis-config/reset`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    const resetData = await resetRes.json();
+    assert(resetData.success === true, 'Reset should succeed');
+  });
+
   // Summary
   console.log(`\n${'='.repeat(50)}`);
   console.log(`📊 Results: ${passed} passed, ${failed} failed, ${passed + failed} total`);

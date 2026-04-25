@@ -145,6 +145,13 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_diagnosis_cache_expires_at ON diagnosis_cache(expires_at);
   CREATE INDEX IF NOT EXISTS idx_diagnosis_queue_status ON diagnosis_queue(status);
   CREATE INDEX IF NOT EXISTS idx_api_usage_stats_date_hour ON api_usage_stats(date, hour);
+
+  CREATE TABLE IF NOT EXISTS diagnosis_config (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    template TEXT NOT NULL,
+    updated_at TEXT DEFAULT (datetime('now')),
+    updated_by TEXT DEFAULT 'system'
+  );
 `);
 
 console.log('✅ SQLite database initialized:', dbPath);

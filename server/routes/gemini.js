@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import { getCachedDiagnosis, saveDiagnosisToCache } from '../utils/sqliteCache.js';
 import { getRateLimitStatus } from '../utils/rateLimiter.js';
 import { recordUsageStats } from '../utils/sqliteStats.js';
-import { getDiagnosisTextWithCustom, setCustomDiagnosisTemplate, getCustomDiagnosisTemplate, diagnosisTextTemplate } from '../config/diagnosisText.js';
+import { getDiagnosisTextWithCustom, getCurrentTemplate, saveTemplate, resetTemplate, DEFAULT_DIAGNOSIS_TEMPLATE } from '../config/diagnosisText.js';
 
 dotenv.config();
 
@@ -59,11 +59,13 @@ router.post('/diagnosis', async (req, res) => {
   }
 });
 
-// Get/Set diagnosis text config
+// Get/Set diagnosis text config (DB-persisted)
 router.get('/diagnosis/config', (req, res) => {
+  const currentTemplate = getCurrentTemplate();
   res.json({
-    template: getCustomDiagnosisTemplate() || diagnosisTextTemplate,
-    isCustom: !!getCustomDiagnosisTemplate(),
+    template: currentTemplate,
+    defaultTemplate: DEFAULT_DIAGNOSIS_TEMPLATE,
+    isCustom: currentTemplate !== DEFAULT_DIAGNOSIS_TEMPLATE,
   });
 });
 
@@ -74,10 +76,10 @@ router.post('/diagnosis/config', (req, res) => {
   }
   if (template === '') {
     // Empty string resets to default
-    setCustomDiagnosisTemplate(null);
+    resetTemplate('api');
     return res.json({ success: true, message: 'Diagnosis template reset to default' });
   }
-  setCustomDiagnosisTemplate(template);
+  saveTemplate(template, 'api');
   res.json({ success: true, message: 'Diagnosis template updated' });
 });
 

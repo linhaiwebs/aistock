@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import db from '../database/sqlite.js';
 import { generateToken, authMiddleware } from '../middleware/auth.js';
 import { getSessionSummary, getPopularStocks, getAllSessions, getEventsBySessionId } from '../database/sqliteHelpers.js';
+import { getCurrentTemplate, saveTemplate, resetTemplate, DEFAULT_DIAGNOSIS_TEMPLATE } from '../config/diagnosisText.js';
 
 const router = express.Router();
 
@@ -102,6 +103,54 @@ router.get('/stats', authMiddleware, async (req, res) => {
   } catch (error) {
     console.error('Error fetching stats:', error);
     res.status(500).json({ error: 'Failed to fetch statistics' });
+  }
+});
+
+// ========================================
+// 診断文案管理（管理画面から操作）
+// ========================================
+
+// 現在の診断文案テンプレートを取得
+router.get('/diagnosis-config', authMiddleware, (req, res) => {
+  try {
+    const currentTemplate = getCurrentTemplate();
+    const row = db.prepare('SELECT updated_at, updated_by FROM diagnosis_config WHERE id = 1').get();
+    res.json({
+      template: currentTemplate,
+      defaultTemplate: DEFAULT_DIAGNOSIS_TEMPLATE,
+      isCustom: currentTemplate !== DEFAULT_DIAGNOSIS_TEMPLATE,
+      updatedAt: row?.updated_at || null,
+      updatedBy: row?.updated_by || null,
+    });
+  } catch (error) {
+    console.error('Error fetching diagnosis config:', error);
+    res.status(500).json({ error: 'Failed to fetch diagnosis config' });
+  }
+});
+
+// 診断文案テンプレートを更新
+router.put('/diagnosis-config', authMiddleware, (req, res) => {
+  try {
+    const { template } = req.body;
+    if (template === undefined || template === null) {
+      return res.status(400).json({ error: 'Template string is required' });
+    }
+    saveTemplate(template, req.user?.username || 'admin');
+    res.json({ success: true, message: '診断文案を更新しました' });
+  } catch (error) {
+    console.error('Error saving diagnosis config:', error);
+    res.status(500).json({ error: 'Failed to save diagnosis config' });
+  }
+});
+
+// 診断文案テンプレートをデフォルトにリセット
+router.post('/diagnosis-config/reset', authMiddleware, (req, res) => {
+  try {
+    resetTemplate(req.user?.username || 'admin');
+    res.json({ success: true, message: '診断文案をデフォルトにリセットしました', template: DEFAULT_DIAGNOSIS_TEMPLATE });
+  } catch (error) {
+    console.error('Error resetting diagnosis config:', error);
+    res.status(500).json({ error: 'Failed to reset diagnosis config' });
   }
 });
 

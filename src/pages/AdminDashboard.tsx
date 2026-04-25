@@ -11,13 +11,15 @@ import {
   XCircle,
   Link2,
   Settings,
-  FileDown
+  FileDown,
+  FileText
 } from 'lucide-react';
 import { adminAuth } from '../lib/adminAuth';
 import { apiClient } from '../lib/apiClient';
 import SessionsTab from '../components/SessionsTab';
 import RedirectLinksTab from '../components/RedirectLinksTab';
 import GoogleTrackingTab from '../components/GoogleTrackingTab';
+import DiagnosisConfigTab from '../components/DiagnosisConfigTab';
 
 interface Stats {
   totalSessions: number;
@@ -38,7 +40,7 @@ interface ApiStats {
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'overview' | 'sessions' | 'line-redirects' | 'google-tracking'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'sessions' | 'line-redirects' | 'google-tracking' | 'diagnosis-config'>('overview');
   const [stats, setStats] = useState<Stats | null>(null);
   const [apiStats, setApiStats] = useState<ApiStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -170,6 +172,19 @@ export default function AdminDashboard() {
                 <span>Google追踪</span>
               </div>
             </button>
+            <button
+              onClick={() => setActiveTab('diagnosis-config')}
+              className={`px-6 py-3 font-medium border-b-2 transition ${
+                activeTab === 'diagnosis-config'
+                  ? 'border-slate-900 text-slate-900'
+                  : 'border-transparent text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <FileText className="w-4 h-4" />
+                <span>診断文案</span>
+              </div>
+            </button>
           </div>
         </div>
       </div>
@@ -187,8 +202,10 @@ export default function AdminDashboard() {
           <SessionsTab />
         ) : activeTab === 'line-redirects' ? (
           <RedirectLinksTab />
-        ) : (
+        ) : activeTab === 'google-tracking' ? (
           <GoogleTrackingTab />
+        ) : (
+          <DiagnosisConfigTab />
         )}
       </div>
     </div>
