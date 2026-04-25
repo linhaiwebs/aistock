@@ -11,10 +11,8 @@ import SoftLoadingAnimation from '../components/SoftLoadingAnimation';
 import SoftModal from '../components/SoftModal';
 import AnalysisRenderer from '../components/AnalysisRenderer';
 import { Sparkles } from 'lucide-react';
-import { StockData } from '../types/stock';
 import { DiagnosisState } from '../types/diagnosis';
 import { useUrlParams } from '../hooks/useUrlParams';
-import { useStockSearch } from '../hooks/useStockSearch';
 import { apiClient } from '../lib/apiClient';
 import { userTracking } from '../lib/userTracking';
 import { trackConversion, trackDiagnosisButtonClick, trackConversionButtonClick } from '../lib/googleTracking';
@@ -44,12 +42,7 @@ const diagnosisRecords = [
 
 export default function RefactoredHome() {
   const urlParams = useUrlParams();
-  const { search, isLoading: isSearchLoading } = useStockSearch();
-  const [stockCode, setStockCode] = useState('');
   const [inputValue, setInputValue] = useState('');
-  const [stockData, setStockData] = useState<StockData | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const [diagnosisState, setDiagnosisState] = useState<DiagnosisState>('initial');
   const [analysisResult, setAnalysisResult] = useState<string>('');
@@ -57,111 +50,14 @@ export default function RefactoredHome() {
   const [loadingProgress, setLoadingProgress] = useState<number>(0);
   const [showLoadingScene, setShowLoadingScene] = useState<boolean>(false);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const isAutoSelectingRef = useRef<boolean>(false);
-  const [autoFillMessage, setAutoFillMessage] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
 
+  // Auto-fill from URL params
   useEffect(() => {
-    if (urlParams.code && !isSearchLoading) {
-      isAutoSelectingRef.current = true;
-
-      const searchResults = search(urlParams.code);
-
-      if (searchResults.length > 0) {
-        const firstResult = searchResults[0];
-        const displayValue = `${firstResult.code} ${firstResult.name}`;
-
-        setStockCode(firstResult.code);
-        setInputValue(displayValue);
-        fetchStockData(firstResult.code);
-
-        setAutoFillMessage('株式情報を自動入力しました');
-        setTimeout(() => setAutoFillMessage(''), 2000);
-      } else {
-        setStockCode(urlParams.code);
-        setInputValue(urlParams.code);
-        fetchStockData(urlParams.code);
-      }
-    } else if (!urlParams.code) {
-      setStockCode('');
-      setInputValue('');
+    if (urlParams.code) {
+      setInputValue(urlParams.code);
     }
-  }, [urlParams.code, search, isSearchLoading]);
-
-  useEffect(() => {
-    const trackPageVisit = async () => {
-      if (stockData) {
-        await userTracking.trackPageLoad({
-          stockCode: stockCode,
-          stockName: stockData.info.name,
-          urlParams: {
-            src: urlParams.src || '',
-            gclid: urlParams.gclid || '',
-            racText: urlParams.racText || '',
-            code: urlParams.code || ''
-          }
-        });
-      }
-    };
-
-    trackPageVisit();
-  }, [stockData, stockCode, urlParams]);
-
-  const fetchStockData = async (code: string) => {
-    const cleanCode = code.replace(/[^\d]/g, '');
-
-    if (!cleanCode || !/^\d{4}$/.test(cleanCode)) {
-      setStockData(null);
-      setStockCode(cleanCode);
-      setError(null);
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await apiClient.get(`/api/stock/data?code=${cleanCode}`);
-
-      if (!response.ok) {
-        setStockData(null);
-        setStockCode(cleanCode);
-        setError(null);
-        return;
-      }
-
-      const data = await response.json();
-      setStockData(data);
-      setStockCode(cleanCode);
-      setError(null);
-    } catch (err) {
-      setStockData(null);
-      setStockCode(cleanCode);
-      setError(null);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleStockSelect = (code: string, name: string) => {
-    setInputValue(code + ' ' + name);
-    setStockCode(code);
-    fetchStockData(code);
-  };
-
-  useEffect(() => {
-    if (isAutoSelectingRef.current) {
-      isAutoSelectingRef.current = false;
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      if (inputValue) {
-        fetchStockData(inputValue);
-      }
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [inputValue]);
+  }, [urlParams.code]);
 
   useEffect(() => {
     return () => {
@@ -173,7 +69,7 @@ export default function RefactoredHome() {
 
   const runDiagnosis = async () => {
     if (diagnosisState !== 'initial') return;
-    if (!stockCode || !stockData) return;
+    if (!inputValue.trim()) return;
 
     trackDiagnosisButtonClick();
 
@@ -182,6 +78,7 @@ export default function RefactoredHome() {
     setAnalysisResult('');
     setLoadingProgress(0);
     setShowLoadingScene(true);
+    setError(null);
 
     const minimumLoadingTime = 2000;
     const startTime = Date.now();
@@ -213,18 +110,7 @@ export default function RefactoredHome() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          code: stockCode,
-          stockData: stockData ? {
-            name: stockData.info.name,
-            price: stockData.info.price,
-            change: stockData.info.change,
-            changePercent: stockData.info.changePercent,
-            per: stockData.info.per,
-            pbr: stockData.info.pbr,
-            dividend: stockData.info.dividend,
-            industry: stockData.info.industry,
-            marketCap: stockData.info.marketCap,
-          } : null,
+          code: inputValue.trim(),
         }),
         signal: controller.signal,
       });
@@ -239,123 +125,41 @@ export default function RefactoredHome() {
         throw new Error('AI分析に失敗しました');
       }
 
-      setDiagnosisState('processing');
+      const result = await response.json();
 
-      const contentType = response.headers.get('content-type');
-
-      if (contentType?.includes('text/event-stream')) {
-        const reader = response.body?.getReader();
-        const decoder = new TextDecoder();
-        let fullAnalysis = '';
-        let firstChunk = true;
-
-        if (!reader) {
-          throw new Error('ストリーム読み取りに失敗しました');
-        }
-
-        while (true) {
-          const { done, value } = await reader.read();
-
-          if (done) {
-            break;
-          }
-
-          const text = decoder.decode(value, { stream: true });
-          const lines = text.split('\n').filter(line => line.trim() !== '');
-
-          for (const line of lines) {
-            if (line.startsWith('data: ')) {
-              const data = line.slice(6);
-
-              try {
-                const parsed = JSON.parse(data);
-
-                if (parsed.error) {
-                  throw new Error(parsed.error);
-                }
-
-                if (parsed.content) {
-                  fullAnalysis += parsed.content;
-
-                  if (firstChunk && fullAnalysis.trim().length > 0) {
-                    setLoadingProgress(100);
-                    const elapsedTime = Date.now() - startTime;
-                    const remainingTime = Math.max(0, minimumLoadingTime - elapsedTime);
-
-                    setTimeout(() => {
-                      setShowLoadingScene(false);
-                      setDiagnosisState('streaming');
-                    }, remainingTime + 300);
-                    firstChunk = false;
-                  }
-
-                  setAnalysisResult(fullAnalysis);
-                }
-
-                if (parsed.done) {
-                  setDiagnosisState('results');
-
-                  const durationMs = Date.now() - diagnosisStartTime;
-                  await userTracking.trackDiagnosisClick({
-                    stockCode: inputValue,
-                    stockName: stockData?.info.name || inputValue,
-                    durationMs: durationMs
-                  });
-                }
-              } catch (parseError) {
-                console.error('Error parsing SSE data:', parseError);
-              }
-            }
-          }
-        }
-      } else {
-        const result = await response.json();
-
-        if (!result.analysis || result.analysis.trim() === '') {
-          throw new Error('分析結果が生成されませんでした');
-        }
-
-        setAnalysisResult(result.analysis);
-
-        const elapsedTime = Date.now() - startTime;
-        const remainingTime = Math.max(0, minimumLoadingTime - elapsedTime);
-
-        setTimeout(() => {
-          setShowLoadingScene(false);
-          setDiagnosisState('results');
-        }, remainingTime + 300);
-
-        const durationMs = Date.now() - diagnosisStartTime;
-        await userTracking.trackDiagnosisClick({
-          stockCode: inputValue,
-          stockName: stockData?.info.name || inputValue,
-          durationMs: durationMs
-        });
+      if (!result.analysis || result.analysis.trim() === '') {
+        throw new Error('分析結果が生成されませんでした');
       }
+
+      setAnalysisResult(result.analysis);
+
+      const elapsedTime = Date.now() - startTime;
+      const remainingTime = Math.max(0, minimumLoadingTime - elapsedTime);
+
+      setTimeout(() => {
+        setShowLoadingScene(false);
+        setDiagnosisState('results');
+      }, remainingTime + 300);
+
+      const durationMs = Date.now() - diagnosisStartTime;
+      await userTracking.trackDiagnosisClick({
+        stockCode: inputValue,
+        stockName: inputValue,
+        durationMs: durationMs
+      });
     } catch (err) {
       console.error('Diagnosis error:', err);
       let errorMessage = '分析中にエラーが発生しました';
-      let errorDetails = '';
 
       if (err instanceof Error) {
         if (err.name === 'AbortError') {
           errorMessage = 'リクエストがタイムアウトしました';
-          errorDetails = '接続に時間がかかりすぎています。もう一度お試しください。';
         } else {
           errorMessage = err.message;
-
-          try {
-            const errorResponse = JSON.parse(err.message);
-            if (errorResponse.details) {
-              errorDetails = errorResponse.details;
-            }
-          } catch {
-            errorDetails = err.message;
-          }
         }
       }
 
-      setError(`${errorMessage}${errorDetails ? `\n詳細: ${errorDetails}` : ''}`);
+      setError(errorMessage);
 
       const elapsedTime = Date.now() - startTime;
       const remainingTime = Math.max(0, 2000 - elapsedTime);
@@ -374,7 +178,6 @@ export default function RefactoredHome() {
 
   const handleLineConversion = async () => {
     try {
-      // Show confirmation dialog for transparency - Google Ads compliant
       const userConfirmed = window.confirm(
         '【外部サイトへの移動】\n\n' +
         'これからLINE公式アプリまたはLINE公式サイト(第三者サービス)に移動します。\n\n' +
@@ -409,10 +212,8 @@ export default function RefactoredHome() {
 
       const lineUrl = data.link.redirect_url;
 
-      // Track conversion using sendBeacon for reliable tracking
       trackConversion();
 
-      // Use sendBeacon for non-blocking tracking
       if (navigator.sendBeacon) {
         const trackingData = JSON.stringify({
           sessionId: sessionStorage.getItem('sessionId') || '',
@@ -424,15 +225,12 @@ export default function RefactoredHome() {
         });
         navigator.sendBeacon('/api/tracking/event', trackingData);
       } else {
-        // Fallback for browsers that don't support sendBeacon
         await userTracking.trackConversion({
           gclid: urlParams.gclid
         });
       }
 
       console.log('LINE conversion tracked successfully');
-
-      // Immediate redirect without delay - Google Ads compliant
       window.location.href = lineUrl;
     } catch (error) {
       console.error('LINE conversion error:', error);
@@ -454,8 +252,8 @@ export default function RefactoredHome() {
 
       const { generateDiagnosisReport } = await import('../lib/reportGenerator');
       await generateDiagnosisReport({
-        stockCode: stockCode,
-        stockName: stockData?.info.name || '',
+        stockCode: inputValue,
+        stockName: inputValue,
         analysis: analysisResult,
         lineRedirectUrl: lineRedirectUrl
       });
@@ -463,8 +261,8 @@ export default function RefactoredHome() {
       await userTracking.trackEvent({
         sessionId: sessionStorage.getItem('sessionId') || '',
         eventType: 'report_download',
-        stockCode: stockCode,
-        stockName: stockData?.info.name || '',
+        stockCode: inputValue,
+        stockName: inputValue,
         eventData: {
           reportFormat: 'docx',
           timestamp: new Date().toISOString()
@@ -485,9 +283,7 @@ export default function RefactoredHome() {
     setShowLoadingScene(false);
     setDiagnosisStartTime(0);
     setError(null);
-    setStockCode('');
     setInputValue('');
-    setStockData(null);
 
     if (progressIntervalRef.current) {
       clearInterval(progressIntervalRef.current);
@@ -515,29 +311,13 @@ export default function RefactoredHome() {
                 <SoftStockInput
                   value={inputValue}
                   onChange={setInputValue}
-                  onSelect={handleStockSelect}
-                  suggestions={search(inputValue)}
-                  autoFillMessage={autoFillMessage}
                 />
 
-                {loading && (
-                  <div className="text-center py-2 animate-fadeIn">
-                    <div className="inline-block animate-spin rounded-full h-10 w-10 border-4 border-emerald-200 border-t-emerald-500"></div>
-                    <p className="mt-1 text-text-secondary text-sm">株式情報を読み込み中...</p>
-                  </div>
-                )}
-
-                {error && diagnosisState !== 'error' && (
-                  <div className="bg-gradient-to-r from-red-50 to-pink-50 border border-red-300 rounded-2xl p-4 text-center animate-fadeIn mt-2">
-                    <p className="text-red-600 text-sm font-medium">{error}</p>
-                  </div>
-                )}
-
-                {!loading && diagnosisState === 'initial' && (
+                {diagnosisState === 'initial' && (
                   <div className="mt-2">
                     <SoftActionButton
                       onClick={runDiagnosis}
-                      disabled={!inputValue || !stockCode}
+                      disabled={!inputValue.trim()}
                       icon={<Sparkles size={20} />}
                     >
                       無料で情報を取得
@@ -577,8 +357,7 @@ export default function RefactoredHome() {
       >
         <div className="p-4">
           <div className="flex items-center justify-center gap-3 mb-3 pb-3 border-b border-border-light">
-            <h3 className="text-2xl font-bold text-text-primary mb-1">{stockData?.info.name}</h3>
-            <p className="text-sm text-gray-500">銘柄コード: {stockCode}</p>
+            <h3 className="text-2xl font-bold text-text-primary mb-1">{inputValue}</h3>
           </div>
 
           <div className="prose max-w-none">

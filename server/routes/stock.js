@@ -3,6 +3,57 @@ import { searchStocks, createOrUpdateStock } from '../database/sqliteHelpers.js'
 
 const router = express.Router();
 
+// Simple in-memory cache for stock data (5 min TTL)
+const stockCache = new Map();
+const CACHE_TTL = 5 * 60 * 1000;
+
+function getCachedStockData(code) {
+  const cached = stockCache.get(code);
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+    return cached.data;
+  }
+  stockCache.delete(code);
+  return null;
+}
+
+function setCachedStockData(code, data) {
+  stockCache.set(code, { data, timestamp: Date.now() });
+  // Evict old entries if cache grows too large
+  if (stockCache.size > 200) {
+    const oldestKey = stockCache.keys().next().value;
+    stockCache.delete(oldestKey);
+  }
+}
+
+async function fetchWithRetry(url, options, maxRetries = 3) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const response = await fetch(url, options);
+      if (response.ok) return response;
+      console.warn(`Fetch attempt ${attempt}/${maxRetries} failed: ${response.status} ${response.statusText} for ${url}`);
+      if (response.status === 403 || response.status === 429) {
+        // Rate limited or blocked - wait longer before retry
+        const delay = attempt * 2000;
+        await new Promise(r => setTimeout(r, delay));
+        continue;
+      }
+      // For other HTTP errors, still retry but with shorter delay
+      if (attempt < maxRetries) {
+        await new Promise(r => setTimeout(r, 1000));
+        continue;
+      }
+      return response;
+    } catch (err) {
+      console.warn(`Fetch attempt ${attempt}/${maxRetries} error: ${err.message} for ${url}`);
+      if (attempt < maxRetries) {
+        await new Promise(r => setTimeout(r, attempt * 1500));
+        continue;
+      }
+      throw err;
+    }
+  }
+}
+
 function parseStockInfo(html) {
   try {
     const codeMatch = html.match(/<h2><span class="inline-block">(\d+)<\/span>/);
@@ -123,17 +174,28 @@ router.get('/data', async (req, res) => {
       return res.status(400).json({ error: 'Stock code is required' });
     }
 
+    // Check cache first
+    const cachedData = getCachedStockData(code);
+    if (cachedData) {
+      return res.json({ ...cachedData, cached: true });
+    }
+
     const stockUrl = `https://kabutan.jp/stock/kabuka?code=${code}`;
-    const response = await fetch(stockUrl, {
+    const response = await fetchWithRetry(stockUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         'Accept-Language': 'ja,en-US;q=0.7,en;q=0.3',
+        'Referer': 'https://kabutan.jp/',
       },
     });
 
     if (!response.ok) {
-      return res.status(response.status).json({ error: 'Failed to fetch stock data' });
+      console.error(`kabutan.jp returned ${response.status} for code ${code}`);
+      return res.status(502).json({
+        error: 'Failed to fetch stock data',
+        details: `Upstream server returned ${response.status}`
+      });
     }
 
     const html = await response.text();
@@ -141,6 +203,7 @@ router.get('/data', async (req, res) => {
     const stockPrices = parseStockPrices(html);
 
     if (!stockInfo) {
+      console.error(`Failed to parse stock data for code ${code}`);
       return res.status(500).json({ error: 'Failed to parse stock data' });
     }
 
@@ -157,6 +220,9 @@ router.get('/data', async (req, res) => {
       info: stockInfo,
       prices: stockPrices,
     };
+
+    // Cache the result
+    setCachedStockData(code, data);
 
     res.json(data);
   } catch (error) {
