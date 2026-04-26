@@ -66,7 +66,7 @@ export default function IllustrationCard() {
 
           <div className="flex-1 flex flex-col items-start justify-center mt-6 mb-10">
             <div className="text-left mb-4">
-              <h1 className="text-5xl font-bold text-gray-900">AI</h1>
+              <h1 className="text-5xl font-bold text-gray-900">株式</h1>
             </div>
 
             <div className="w-full -mx-6">

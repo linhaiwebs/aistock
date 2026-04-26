@@ -25,7 +25,7 @@ export async function generateDiagnosisReport(data: ReportData): Promise<void> {
         properties: {},
         children: [
           new Paragraph({
-            text: 'AI株式分析レポート',
+            text: '株式分析レポート',
             heading: HeadingLevel.HEADING_1,
             alignment: AlignmentType.CENTER,
             spacing: { after: 400 }
@@ -146,7 +146,7 @@ export async function generateDiagnosisReport(data: ReportData): Promise<void> {
   });
 
   const blob = await doc.toBlob();
-  saveAs(blob, `AI株式分析レポート_${data.stockCode}_${new Date().getTime()}.docx`);
+  saveAs(blob, `株式分析レポート_${data.stockCode}_${new Date().getTime()}.docx`);
 }
 
 interface AnalysisSection {

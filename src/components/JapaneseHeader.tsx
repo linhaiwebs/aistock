@@ -22,9 +22,9 @@ export default function JapaneseHeader() {
             </div>
             <div>
               <h1 className="text-xl font-bold text-gray-900" style={{ fontFamily: "'Noto Sans JP', sans-serif" }}>
-                AI株式診断
+                株式診断
               </h1>
-              <p className="text-xs text-gray-500">人工知能による株式分析</p>
+              <p className="text-xs text-gray-500">データ分析による株式情報</p>
             </div>
           </div>
 

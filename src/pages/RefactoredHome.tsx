@@ -122,7 +122,7 @@ export default function RefactoredHome() {
       }
 
       if (!response.ok) {
-        throw new Error('AI分析に失敗しました');
+        throw new Error('分析に失敗しました');
       }
 
       const result = await response.json();
@@ -353,7 +353,7 @@ export default function RefactoredHome() {
       <SoftModal
         isOpen={diagnosisState === 'streaming' || diagnosisState === 'results'}
         onClose={closeModal}
-        title="AI分析情報"
+        title="分析情報"
       >
         <div className="p-4">
           <div className="flex items-center justify-center gap-3 mb-3 pb-3 border-b border-border-light">

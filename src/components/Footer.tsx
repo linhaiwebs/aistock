@@ -22,7 +22,7 @@ export default function Footer() {
                 <div className="bg-pale-yellow rounded-2xl p-4 border-l-4 border-accent-coral">
                   <p className="font-semibold text-text-primary mb-2">【サービスの性質】</p>
                   <p>
-                    本サービスは、AI技術を活用した株式情報の提供および分析ツールです。
+                    本サービスは、先進技術を活用した株式情報の提供および分析ツールです。
                     <strong className="text-accent-peach">投資助言業務、投資一任業務、金融商品仲介業務には該当せず、特定の金融商品の売買を推奨・勧誘するものではありません。</strong>
                   </p>
                 </div>
@@ -42,7 +42,7 @@ export default function Footer() {
                   <p>
                     提供される情報は、信頼できると判断した情報源から取得していますが、
                     その正確性、完全性、適時性を保証するものではありません。
-                    AI分析結果は参考情報として提供されるものであり、投資判断の唯一の基準とすべきではありません。
+                    分析結果は参考情報として提供されるものであり、投資判断の唯一の基準とすべきではありません。
                   </p>
                 </div>
 

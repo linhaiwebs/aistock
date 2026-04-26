@@ -14,7 +14,7 @@ export default function ModernHeader() {
         <p className="text-base md:text-lg text-text-primary leading-relaxed px-4 drop-shadow-soft-shadow-lg font-medium">
           <span className="font-semibold text-cyan-300">銘柄コード</span>を入力するだけで
           <br />
-          <span className="font-semibold text-blue-300">AIが即座に分析</span>
+          <span className="font-semibold text-blue-300">即座に分析</span>
           <br />
           詳細レポートを取得
         </p>

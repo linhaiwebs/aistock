@@ -18,7 +18,7 @@ export default function SoftHeader() {
             </div>
             <div>
               <h1 className="text-2xl font-semibold text-text-primary">
-                AI株式情報ツール
+                株式情報ツール
               </h1>
               <p className="text-xs text-text-muted mt-0.5">株式情報を分かりやすく可視化</p>
             </div>

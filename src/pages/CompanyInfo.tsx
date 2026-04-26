@@ -86,7 +86,7 @@ export default function CompanyInfo() {
                   <div>
                     <h3 className="text-xl font-bold text-text-primary mb-3">業種</h3>
                     <p className="text-text-secondary text-lg leading-relaxed">
-                      AI技術を活用した株式情報提供サービス／デジタルマーケティング支援
+                      先進技術を活用した株式情報提供サービス／デジタルマーケティング支援
                     </p>
                   </div>
                 </div>
@@ -103,10 +103,10 @@ export default function CompanyInfo() {
                 <div className="bg-surface-light border-2 border-border-medium rounded-lg p-5 hover:border-accent-coral transition-colors">
                   <h4 className="font-bold text-text-primary mb-2 flex items-center gap-2">
                     <span className="w-8 h-8 bg-accent-coral text-dark-navy rounded-full flex items-center justify-center text-sm font-bold">1</span>
-                    AI株式情報分析サービスの提供
+                    株式情報分析サービスの提供
                   </h4>
                   <p className="text-text-secondary text-sm leading-relaxed ml-10">
-                    人工知能技術を活用した株式市場データの分析・情報提供サービス（情報提供のみ、投資助言には該当しません）
+                    先進技術を活用した株式市場データの分析・情報提供サービス（情報提供のみ、投資助言には該当しません）
                   </p>
                 </div>
 
@@ -146,7 +146,7 @@ export default function CompanyInfo() {
               <div className="bg-surface-light rounded-lg p-6 border border-border-medium">
                 <h3 className="text-xl font-bold text-text-primary mb-4">企業理念</h3>
                 <p className="text-text-secondary leading-relaxed mb-3">
-                  有限会社 藍デザイン工房は、AI技術を活用した情報提供サービスを通じて、
+                  有限会社 藍デザイン工房は、先進技術を活用した情報提供サービスを通じて、
                   投資家の皆様により良い情報アクセスを提供することを使命としています。
                 </p>
                 <p className="text-text-secondary leading-relaxed">

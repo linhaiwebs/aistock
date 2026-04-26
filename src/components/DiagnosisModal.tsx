@@ -68,12 +68,12 @@ export default function DiagnosisModal({
           >
           <div className="flex-1 text-center">
             <h2 className="text-sm font-bold text-text-primary">
-              {stockName}（{stockCode}）AI分析レポート
+              {stockName}（{stockCode}）分析レポート
             </h2>
             {isConnecting && (
               <div className="flex items-center gap-2 text-text-primary text-sm justify-center mt-2">
                 <Loader2 className="w-4 h-4 animate-spin" style={{ color: '#FFB6A3' }} />
-                <span>AIサーバーに接続中...</span>
+                <span>サーバーに接続中...</span>
               </div>
             )}
             {isStreaming && !isConnecting && (
@@ -100,7 +100,7 @@ export default function DiagnosisModal({
                 {isConnecting ? (
                   <div className="text-center py-8">
                     <Loader2 className="w-12 h-12 animate-spin mx-auto mb-4" style={{ color: '#38B2AC' }} />
-                    <p className="font-semibold" style={{ color: '#2C5282' }}>AI分析中...</p>
+                    <p className="font-semibold" style={{ color: '#2C5282' }}>分析中...</p>
                     <p className="text-sm mt-2" style={{ color: '#38B2AC' }}>処理中...</p>
                   </div>
                 ) : (
@@ -122,7 +122,7 @@ export default function DiagnosisModal({
               }}
             >
               <ExternalLink className="w-6 h-6 flex-shrink-0" />
-              <span>LINEで毎日AIレポートを受け取る</span>
+              <span>LINEで毎日分析レポートを受け取る</span>
             </button>
 
             <div className="mt-3 p-4 rounded-lg border" style={{ backgroundColor: 'rgba(255, 229, 212, 0.3)', borderColor: '#FFA07A' }}>
@@ -147,7 +147,7 @@ export default function DiagnosisModal({
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="font-bold mt-0.5" style={{ color: '#38B2AC' }}>✓</span>
-                  <span>LINE友だち追加で毎日最新のAI分析レポートが受け取れます。</span>
+                  <span>LINE友だち追加で毎日最新の分析レポートが受け取れます。</span>
                 </li>
               </ul>
             </div>

@@ -18,7 +18,7 @@ export default function SoftActivityFeed({ records }: SoftActivityFeedProps) {
         </div>
         <h3 className="text-3xl font-bold text-text-primary mb-3">最近の診断実績</h3>
         <p className="text-base text-text-secondary max-w-2xl mx-auto">
-          全国の投資家様が活用中。AIによる高精度な株式分析をご体験ください。
+          全国の投資家様が活用中。自動分析による株式データををご体験ください。
         </p>
         <div className="flex items-center justify-center gap-6 mt-4 text-sm">
           <div className="flex items-center gap-2">
@@ -69,7 +69,7 @@ export default function SoftActivityFeed({ records }: SoftActivityFeedProps) {
               </div>
               <div>
                 <p className="text-sm font-semibold text-text-primary leading-relaxed">{record.stock}</p>
-                <p className="text-xs text-gray-500 mt-1">AI分析済み</p>
+                <p className="text-xs text-gray-500 mt-1">分析済み</p>
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 # Robots.txt for http://localhost:5173
-# AI株式診断サービス
+# 株式情報分析ツール
 
 User-agent: *
 Allow: /

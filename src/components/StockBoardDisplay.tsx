@@ -70,11 +70,11 @@ export default function StockBoardDisplay() {
                   textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
                   fontFamily: "'Noto Sans JP', sans-serif"
                 }}>
-                  <span className="inline-block" style={{ color: '#D4AF37' }}>AI</span>
+                  <span className="inline-block" style={{ color: '#D4AF37' }}>データ</span>
                   <span className="inline-block mx-2">が</span>
                   <span className="inline-block text-red-500">診断</span>
                 </h2>
-                <p className="text-white text-lg opacity-90">人工知能による株式分析</p>
+                <p className="text-white text-lg opacity-90">市場データによる株式分析</p>
               </div>
             )}
             {currentIndex === 1 && (

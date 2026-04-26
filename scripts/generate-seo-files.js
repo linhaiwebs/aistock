@@ -18,8 +18,8 @@ const publicRoutes = [
 ];
 
 const SITE_DOMAIN = process.env.VITE_SITE_DOMAIN || 'http://localhost:5173';
-const SITE_NAME = process.env.VITE_SITE_NAME || 'AI株式診断サービス';
-const SITE_DESCRIPTION = process.env.VITE_SITE_DESCRIPTION || '完全無料・登録不要・クレジットカード不要のAI株式診断サービス。AIが株式市場を分析し、詳細なレポートを数秒で提供。';
+const SITE_NAME = process.env.VITE_SITE_NAME || '株式情報分析ツール';
+const SITE_DESCRIPTION = process.env.VITE_SITE_DESCRIPTION || '完全無料・登録不要・クレジットカード不要の株式情報分析ツール。市場データを自動分析し、詳細なレポートを数秒で提供。';
 
 const publicDir = path.resolve(__dirname, '../public');
 

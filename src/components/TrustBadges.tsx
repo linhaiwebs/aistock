@@ -40,7 +40,7 @@ export default function TrustBadges() {
               <TrendingUp className="w-4 h-4 text-text-primary" />
             </div>
           </div>
-          <p className="text-xs font-bold text-sky-100 drop-shadow-soft-shadow-lg">AI分析</p>
+          <p className="text-xs font-bold text-sky-100 drop-shadow-soft-shadow-lg">データ分析</p>
           <p className="text-[10px] text-sky-200/80 drop-shadow-soft-shadow-lg">詳細分析</p>
         </div>
       </div>

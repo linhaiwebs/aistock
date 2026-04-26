@@ -82,7 +82,7 @@ export default function DiagnosisLoadingOverlay({
           </div>
 
           <div className="mb-6">
-            <h3 className="text-xl font-bold text-white mb-2 text-center">AI分析を実行中</h3>
+            <h3 className="text-xl font-bold text-white mb-2 text-center">分析を実行中</h3>
             <p className="text-sm text-center" style={{ color: '#C4B5FD' }}>市場データを深度分析しています...</p>
           </div>
 
@@ -106,14 +106,14 @@ export default function DiagnosisLoadingOverlay({
           <div className="bg-gray-900/40 border-2 rounded-lg p-6 backdrop-blur-sm" style={{ borderColor: 'rgba(139, 131, 255, 0.3)' }}>
             <div className="space-y-3 text-sm">
               <p className="text-white font-semibold text-center text-base">
-                📊 AIが複数の指標を総合的に評価中
+	                📊 複数の指標を総合的に評価中
               </p>
               <p className="text-center" style={{ color: '#C4B5FD' }}>
                 しばらくお待ちください
               </p>
               <div className="pt-3 border-t border-modern-purple-500/30">
                 <p className="text-xs text-gray-300 text-center leading-relaxed">
-                  すべてのデータは公開されている市場情報を使用しており、公開市場データに基づいて分析を行っています。本分析は最新のAI技術により、財務指標、業界動向、市場トレンドを総合的に評価しています。
+                  すべてのデータは公開されている市場情報を使用しており、公開市場データに基づいて分析を行っています。本分析は最新の分析技術により、財務指標、業界動向、市場トレンドを総合的に評価しています。
                 </p>
               </div>
             </div>

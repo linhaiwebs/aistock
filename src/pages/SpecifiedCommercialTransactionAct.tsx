@@ -56,7 +56,7 @@ export default function SpecifiedCommercialTransactionAct() {
                     </div>
                     <div className="grid sm:grid-cols-3 gap-2">
                       <dt className="font-semibold text-text-primary">業種</dt>
-                      <dd className="sm:col-span-2 text-text-secondary">AI技術を活用した情報提供サービス</dd>
+                      <dd className="sm:col-span-2 text-text-secondary">先進技術を活用した情報提供サービス</dd>
                     </div>
                   </dl>
                 </div>
@@ -95,7 +95,7 @@ export default function SpecifiedCommercialTransactionAct() {
                 <ul className="space-y-2 text-text-secondary">
                   <li className="flex items-start gap-2">
                     <span className="text-accent-coral mt-1">•</span>
-                    <span>AI技術を活用した株式情報の提供および分析サービス</span>
+                    <span>先進技術を活用した株式情報の提供および分析サービス</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-accent-coral mt-1">•</span>
@@ -103,7 +103,7 @@ export default function SpecifiedCommercialTransactionAct() {
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-accent-coral mt-1">•</span>
-                    <span>AI分析レポートの生成と提供</span>
+                    <span>分析レポートの生成と提供</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-accent-coral mt-1">•</span>
@@ -121,7 +121,7 @@ export default function SpecifiedCommercialTransactionAct() {
                     <div>
                       <h3 className="font-bold text-text-primary mb-1">基本サービス</h3>
                       <p className="text-sm text-text-secondary">
-                        株価情報の閲覧、AI診断機能、レポートダウンロード
+                        株価情報の閲覧、診断機能、レポートダウンロード
                       </p>
                     </div>
                     <div className="text-right flex-shrink-0">
@@ -167,7 +167,7 @@ export default function SpecifiedCommercialTransactionAct() {
               <div className="bg-surface-light rounded-lg p-5 border border-border-medium">
                 <p className="text-text-secondary leading-relaxed">
                   サービスはお申し込み後、即時ご利用いただけます。
-                  AI診断結果の生成には、通常数秒から数十秒程度のお時間をいただきます。
+                  診断結果の生成には、通常数秒から数十秒程度のお時間をいただきます。
                 </p>
               </div>
             </section>
@@ -218,7 +218,7 @@ export default function SpecifiedCommercialTransactionAct() {
                 <p className="text-accent-peach font-semibold mb-3">重要なお知らせ</p>
                 <div className="space-y-2 text-text-secondary text-sm leading-relaxed">
                   <p>
-                    当サービスは、AI技術を活用した株式情報の提供および分析ツールであり、
+                    当サービスは、先進技術を活用した株式情報の提供および分析ツールであり、
                     投資助言業務、投資一任業務、金融商品仲介業務には該当しません。
                   </p>
                   <p>

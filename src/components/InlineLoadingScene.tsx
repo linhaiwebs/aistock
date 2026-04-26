@@ -13,7 +13,7 @@ export default function InlineLoadingScene({ isVisible }: InlineLoadingSceneProp
     <div className="w-full animate-fadeIn">
       <div className="text-center mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
-          AI正在分析報告
+          分析中
         </h2>
         <p className="text-sm md:text-base" style={{ color: '#81E6D9' }}>
           数秒お待ちください...

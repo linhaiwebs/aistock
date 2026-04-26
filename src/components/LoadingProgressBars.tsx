@@ -68,7 +68,7 @@ export default function LoadingProgressBars({ isVisible }: LoadingProgressBarsPr
 
   const stages = [
     { label: 'データ収集中', progress: stage1, color: '#4FD1C5' },
-    { label: 'AI分析中', progress: stage2, color: '#38B2AC' },
+    { label: 'データ分析中', progress: stage2, color: '#38B2AC' },
     { label: 'レポート生成中', progress: stage3, color: '#FFA07A' },
   ];
 

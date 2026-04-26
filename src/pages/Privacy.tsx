@@ -27,7 +27,7 @@ export default function Privacy() {
             <section className="mb-8">
               <h2 className="text-xl font-bold text-text-primary mb-4">1. 基本方針</h2>
               <p className="text-text-secondary leading-relaxed">
-                AI株式分析サービス（以下「当サービス」）の運営者である株式会社イービット（以下「当社」）は、利用者の個人情報の重要性を認識し、
+                株式分析サービス（以下「当サービス」）の運営者である株式会社イービット（以下「当社」）は、利用者の個人情報の重要性を認識し、
                 個人情報の保護に関する法律（個人情報保護法）を遵守し、適切に取り扱い、保護することに努めます。
               </p>
             </section>

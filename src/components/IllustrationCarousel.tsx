@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 const carouselItems = [
   {
     id: 1,
-    titleLine1: 'AIで分析',
+    titleLine1: 'データで分析',
     titleLine2: '株式情報',
     titleLine3: 'ツール',
   },
@@ -246,7 +246,7 @@ export default function IllustrationCarousel() {
               <circle cx="21" cy="20" r="2" fill="#FFB6A3" opacity="0.6" />
               <circle cx="29" cy="15" r="2" fill="#FFB6A3" opacity="0.6" />
 
-              <text x="35" y="12" fill="#4FD1C5" fontSize="8" opacity="0.4" fontFamily="monospace">AI</text>
+              <text x="35" y="12" fill="#4FD1C5" fontSize="8" opacity="0.4" fontFamily="monospace">%</text>
               <text x="45" y="20" fill="#FFA07A" fontSize="6" opacity="0.3" fontFamily="monospace">%</text>
             </svg>
           </div>

@@ -14,11 +14,11 @@ export default function ModernPromptBox({ stockName, stockCode }: ModernPromptBo
             </span>
             の分析準備が完了しました
             <br />
-            下のボタンをクリックして、AIレポートを受け取りましょう
+            下のボタンをクリックして、分析レポートを受け取りましょう
           </p>
         ) : (
           <p className="text-sm md:text-base text-gray-200 text-center leading-relaxed">
-            株式コードを入力すると、AIが
+            株式コードを入力すると、
             <span className="text-white font-semibold"> 指標</span>、
             <span className="text-white font-semibold">データ</span>、
             <span className="text-white font-semibold">トレンド</span>

@@ -102,7 +102,7 @@ export default function DiagnosisConfigTab() {
       <div>
         <h2 className="text-2xl font-bold text-slate-900">診断文案管理</h2>
         <p className="text-sm text-slate-600 mt-1">
-          AI診断結果の文案テンプレートを編集します。{' '}
+          診断結果の文案テンプレートを編集します。{' '}
           <code className="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">{'{input}'}</code>{' '}
           はユーザーの入力値に置換されます。
         </p>

@@ -27,7 +27,7 @@ export default function Terms() {
             <section className="mb-8">
               <h2 className="text-xl font-bold text-text-primary mb-4">第1条（適用）</h2>
               <p className="text-text-secondary leading-relaxed mb-3">
-                本規約は、AI株式情報ツール（以下「当サービス」といいます）の利用に関する条件を、当サービスを利用する全ての方（以下「利用者」といいます）と株式会社 桜テ（以下「当社」といいます）との間で定めるものです。
+                本規約は、株式情報ツール（以下「当サービス」といいます）の利用に関する条件を、当サービスを利用する全ての方（以下「利用者」といいます）と株式会社 桜テ（以下「当社」といいます）との間で定めるものです。
               </p>
               <p className="text-text-secondary leading-relaxed">
                 利用者は、当サービスを利用することにより、本規約の全ての内容に同意したものとみなされます。
@@ -37,7 +37,7 @@ export default function Terms() {
             <section className="mb-8">
               <h2 className="text-xl font-bold text-text-primary mb-4">第2条（サービスの内容）</h2>
               <p className="text-text-secondary leading-relaxed mb-3">
-                当サービスは、AI技術を活用して株式市場の情報を分析し、利用者に提供する情報提供サービスです。
+                当サービスは、先進技術を活用して株式市場の情報を分析し、利用者に提供する情報提供サービスです。
               </p>
               <p className="text-text-secondary leading-relaxed mb-3">
                 当サービスは以下の機能を提供します：
@@ -45,7 +45,7 @@ export default function Terms() {
               <ul className="list-disc list-inside text-text-secondary space-y-2 ml-4">
                 <li>株式銘柄の基本情報の表示</li>
                 <li>株価推移のグラフ表示</li>
-                <li>AIによる株式分析レポートの生成</li>
+                <li>株式分析レポートの生成</li>
                 <li>市場データの集計および統計情報の提供</li>
               </ul>
             </section>

@@ -29,7 +29,7 @@ export default function SoftLoadingAnimation({ progress }: SoftLoadingAnimationP
         </div>
 
         <div className="space-y-3">
-          <h3 className="text-xl font-semibold text-text-primary">AI診断中...</h3>
+          <h3 className="text-xl font-semibold text-text-primary">診断中...</h3>
           <p className="text-sm text-gray-500">株式情報を分析しています</p>
         </div>
 

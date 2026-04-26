@@ -2,8 +2,8 @@ export default function AIAccuracyChart() {
   return (
     <div className="w-full max-w-2xl mx-auto p-8 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-soft-shadow-lg border border-blue-200">
       <div className="text-center mb-6">
-        <h3 className="text-2xl font-bold text-blue-900 mb-2">AI株価予測精度</h3>
-        <p className="text-sm text-blue-600">機械学習モデルによる高精度分析</p>
+        <h3 className="text-2xl font-bold text-blue-900 mb-2">データ分析精度</h3>
+        <p className="text-sm text-blue-600">分析モデルによる高精度分析</p>
       </div>
 
       <div className="grid grid-cols-3 gap-4 mb-8">
@@ -80,7 +80,7 @@ export default function AIAccuracyChart() {
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
           </svg>
-          <span className="text-sm font-medium">最新AIモデル ver.2.5 使用中</span>
+          <span className="text-sm font-medium">最新分析モデル ver.2.5 使用中</span>
         </div>
       </div>
 

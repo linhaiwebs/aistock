@@ -23,7 +23,7 @@ export default function Contact() {
 
           <div className="prose max-w-none">
             <p className="text-text-secondary leading-relaxed mb-8">
-              AI株式診断サービスをご利用いただき、誠にありがとうございます。
+              株式情報分析ツールをご利用いただき、誠にありがとうございます。
               ご質問、ご要望、不具合のご報告など、お気軽にお問い合わせください。
             </p>
 
@@ -162,7 +162,7 @@ export default function Contact() {
                   Dogenzaka 2-10-12, Shibuya-ku, Tokyo
                 </p>
                 <p>
-                  <strong className="text-text-primary">業種:</strong> AI技術を活用した情報提供サービス
+                  <strong className="text-text-primary">業種:</strong> 先進技術を活用した情報提供サービス
                 </p>
                 <p>
                   <strong className="text-text-primary">電話:</strong> +81 03-5456-7890
